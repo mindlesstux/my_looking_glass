@@ -5,9 +5,25 @@
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
+  - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    allow:
+      - dependency-name: "fullapi*"
+        dependency-type: "direct"
+      - dependency-name: "uvicorn*"
+        dependency-type: "direct"
+      - dependency-name: "python-dotenv*"
+        dependency-type: "direct"
+    assignees:
+      - "mindlesstux"
+  - package-ecosystem: "github-actions"
+    # Workflow files stored in the
+    # default location of `.github/workflows`
+    directory: "/"
+    schedule:
+      interval: "daily"
+
       
       
