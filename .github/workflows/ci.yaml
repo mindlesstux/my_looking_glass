@@ -2,9 +2,9 @@ name: ci
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'main'
+  #push:
+  #  branches:
+  #    - 'master'
 
 env:
   # Use docker.io for Docker Hub if empty
