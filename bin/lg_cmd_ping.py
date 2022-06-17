@@ -61,5 +61,5 @@ if args.uuid is not None:
     filename="%s/ping_%s.json" % (config['RESULT_PATH'], args.uuid)
     print(filename)
     f = open(filename, "a")
-    f.write(json.dumps(return_dict, indent=4))
+    f.write(json.dumps(return_dict))
     f.close()

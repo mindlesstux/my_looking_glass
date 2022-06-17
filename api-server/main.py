@@ -1,11 +1,15 @@
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 from fastapi import FastAPI, Query, Path
 from fastapi.staticfiles import StaticFiles
 from typing import Union
+from uuid import UUID
+import glob
+import os
+import json
 import uuid
 import uvicorn
 
-load_dotenv()
+config = dotenv_values(".env")
 
 description = """
 This is a simple attempt at building a looking glass that uses remote linux (for now) to execute some basic tests.
@@ -36,7 +40,22 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata
 )
-app.mount("/result_files", StaticFiles(directory="result_files"), name="result_files")
+
+@app.get(
+    "/result", 
+    tags=["Tests In Development"],
+    summary="Fetch a result json",
+    description="Fetches a result json file.",
+    )
+async def result(
+    uuidid: UUID
+    ):
+    data = {}
+    for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], uuidid)):
+        f = open(file)
+        data = json.loads(f.read())
+        f.close()
+    return data
 
 @app.get(
     "/run/ping", 
@@ -59,8 +78,9 @@ async def run_ping(
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
     uuid_str = str(uuid.uuid1())
-    
-    return False
+    cmd = "python3 bin/lg_cmd_ping.py --uuid=%s %s %s" % (uuid_str, src_location, dst_location)
+    stream = os.popen(cmd)
+    return "{uidid: %s}" % uuid_str
 
 @app.get(
     "/run/mtr", 
