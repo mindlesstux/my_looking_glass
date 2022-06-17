@@ -1,7 +1,6 @@
 name: auto_tag_build
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - '*'
