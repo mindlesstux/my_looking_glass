@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Query, Path
 from fastapi.staticfiles import StaticFiles
 from typing import Union
+import uuid
 import uvicorn
 
 load_dotenv()
@@ -28,7 +29,7 @@ tags_metadata = [
 app = FastAPI(
     title="My Looking Glass",
     description=description,
-    version="0.0.1",
+    version="10001",
     contact={
         "name": "MindlessTux",
         "url": "https://github.com/mindlesstux/my_looking_glass",
@@ -57,6 +58,8 @@ async def run_ping(
         ipv6: Union[bool, None] = Query(default=False, title="Force IPv6", description='Force the --ipv6 flag passed to the ping command.'),
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
+    uuid_str = str(uuid.uuid1())
+    
     return False
 
 @app.get(

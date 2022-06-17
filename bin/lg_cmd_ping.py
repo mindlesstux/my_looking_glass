@@ -1,16 +1,17 @@
 
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 from textwrap import dedent
 import paramiko
 import json
 import argparse
 import pingparsing
 
-load_dotenv()
+config = dotenv_values(".env")
 
 parser = argparse.ArgumentParser(prog='lg_cmd_ping.py', description="This is a wrapper script to ping to be called from an API server.")
 cmd = "ping"
 
+parser.add_argument("-u", "--uuid", help="UUID for the test", default=None)
 parser.add_argument("-4", "--ipv4", help="Force IPv4", action="store_true", default=False)
 parser.add_argument("-6", "--ipv6", help="Force IPv6", action="store_true", default=False)
 parser.add_argument("--ping6", help="Use ping6 for IPv6", action="store_true", default=False)
@@ -31,7 +32,8 @@ if args.count:
 if args.targethost:
     cmd = cmd + " %s" % args.targethost[0]
 
-print("%s" % cmd)
+
+print("%s" % (cmd))
 
 client = paramiko.client.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -39,7 +41,7 @@ parser = pingparsing.PingParsing()
 
 host = args.sourcehost[0]
 
-client.connect(host, username=USERNAME, password=PASSWORD)
+client.connect(host, username=config['USERNAME'], password=config['PASSWORD'])
 output=""
 
 stdin, stdout, stderr = client.exec_command(cmd)
@@ -51,4 +53,13 @@ stderr.close()
 #print(stdout)
 #print(strblob)
 stats = parser.parse(dedent(strblob))
-print(json.dumps(stats.icmp_replies, indent=4))
+return_dict = {}
+return_dict['stats'] = stats.as_dict()
+return_dict['raw'] = stats.icmp_replies
+
+if args.uuid is not None:
+    filename="%s/ping_%s.json" % (config['RESULT_PATH'], args.uuid)
+    print(filename)
+    f = open(filename, "a")
+    f.write(json.dumps(return_dict, indent=4))
+    f.close()
