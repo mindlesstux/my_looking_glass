@@ -16,6 +16,11 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
     steps:
+      - name: Show environment v2
+        run: env | grep ^GITHUB
+      - name: Show ref v2
+        run: echo "===============> Version from $GITHUB_REF"
+        
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
