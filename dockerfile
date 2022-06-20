@@ -7,8 +7,8 @@ RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv
 
 # Grab latest master branch
 RUN git clone https://github.com/mindlesstux/my_looking_glass.git /app
-WORKDIR /app/api-server
-VOLUME /app_data
+WORKDIR /app
+VOLUME /app/result_files
 
 #CMD  ["uvicorn", "main:app", "--reload" ]
 CMD  ["python3", "/app/api-server/main.py"]
