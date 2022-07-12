@@ -1,12 +1,18 @@
-
-from dotenv import dotenv_values
 from textwrap import dedent
 import paramiko
 import json
 import argparse
 import pingparsing
 
-config = dotenv_values(".env")
+config={}
+config['USERNAME'] = os.environ['SSH_USERNAME']
+config['PASSWORD'] = os.environ['SSH_PASSWORD']
+config['SSH_KEY'] = os.environ['SSH_KEY']
+config['RESULT_PATH'] = os.environ['RESULT_PATH']
+if hasattr(os.environ, 'BIN_PATH'):
+    config['BIN_PATH'] = os.environ['BIN_PATH']
+else:
+    config['BIN_PATH'] = 'bin'
 
 parser = argparse.ArgumentParser(prog='lg_cmd_ping.py', description="This is a wrapper script to ping to be called from an API server.")
 cmd = "ping"

@@ -1,4 +1,3 @@
-from dotenv import dotenv_values
 from fastapi import FastAPI, Query, Path
 from fastapi.staticfiles import StaticFiles
 from typing import Union
@@ -9,7 +8,15 @@ import json
 import uuid
 import uvicorn
 
-config = dotenv_values(".env")
+config={}
+config['USERNAME'] = os.environ['SSH_USERNAME']
+config['PASSWORD'] = os.environ['SSH_PASSWORD']
+config['SSH_KEY'] = os.environ['SSH_KEY']
+config['RESULT_PATH'] = os.environ['RESULT_PATH']
+if hasattr(os.environ, 'BIN_PATH'):
+    config['BIN_PATH'] = os.environ['BIN_PATH']
+else:
+    config['BIN_PATH'] = 'bin'
 
 description = """
 This is a simple attempt at building a looking glass that uses remote linux (for now) to execute some basic tests.
@@ -78,7 +85,7 @@ async def run_ping(
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
     uuid_str = str(uuid.uuid1())
-    cmd = "python3 bin/lg_cmd_ping.py --uuid=%s %s %s" % (uuid_str, src_location, dst_location)
+    cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s" % (config['BIN_PATH'], uuid_str, src_location, dst_location)
     stream = os.popen(cmd)
     return "{uidid: %s}" % uuid_str
 
@@ -125,4 +132,5 @@ async def run_snmp():
     return False
 
 if __name__ == '__main__':
+    print(json.dumps(config))
     uvicorn.run(app, port=9180, host='0.0.0.0')
