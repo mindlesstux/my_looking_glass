@@ -40,8 +40,11 @@ WORKDIR /app/api-server
 VOLUME /app/result_files
 
 # Define the basic healthcheck of the container
-HEALTHCHECK  --interval=1m --timeout=3s --start-period=15s --retries=3 \
-  CMD curl -f http://localhost:9180/ || exit 1
+# Interval        = Interval of when the command is run from container start
+# Timeout         = Check should take no longer than this
+# Start Period    = Time for container to "get its legs", ignore fails in this time
+# Retries         = Number of times a fail needs to trigger unhealthy
+HEALTHCHECK  --interval=1m --timeout=3s --start-period=15s --retries=3  CMD curl --fail http://localhost:9180/ || exit 1
 
 #CMD  ["uvicorn", "main:app", "--reload" ]
 CMD  ["python3", "/app/api-server/main.py"]
