@@ -1,4 +1,4 @@
-# Use ubuntu as our base image
+# Use ubuntu as our base
 FROM ubuntu:focal AS build
 
 # Some information labels
@@ -32,7 +32,6 @@ RUN apt-get upgrade -y
 RUN apt-get install -y python3-pip git
 RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv
 
-<<<<<<< HEAD
 # Copy the files into the proper app directory
 COPY api-server /app/api-server
 COPY bin /app/bin
@@ -46,13 +45,3 @@ HEALTHCHECK  --interval=1m --timeout=3s --start-period=15s --retries=3 \
 
 #CMD  ["uvicorn", "main:app", "--reload" ]
 CMD  ["python3", "/app/api-server/main.py"]
-=======
-# Grab latest master branch
-RUN git clone https://github.com/mindlesstux/my_looking_glass.git /app
-WORKDIR /app
-VOLUME /app/result_files
-
-#CMD  ["uvicorn", "main:app", "--reload" ]
-CMD  ["python3", "/app/api-server/main.py"]
-EXPOSE 9180
->>>>>>> 5ddd23b74992ef48e708bd96401403d7087a7fa9
