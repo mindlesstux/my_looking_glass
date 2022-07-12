@@ -57,8 +57,6 @@ strblob = ''.join(stdout)
 client.close()
 stdin.close()
 stderr.close()
-#print(stdout)
-#print(strblob)
 stats = parser.parse(dedent(strblob))
 return_dict = {}
 return_dict['stats'] = stats.as_dict()
@@ -66,7 +64,6 @@ return_dict['raw'] = stats.icmp_replies
 
 if args.uuid is not None:
     filename="%s/ping_%s.json" % (config['RESULT_PATH'], args.uuid)
-    print(filename)
     f = open(filename, "a")
     f.write(json.dumps(return_dict))
     f.close()

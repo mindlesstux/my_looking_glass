@@ -85,7 +85,7 @@ async def run_ping(
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
     uuid_str = str(uuid.uuid1())
-    cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s" % (config['BIN_PATH'], uuid_str, src_location, dst_location)
+    cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location, dst_location)
     stream = os.popen(cmd)
     return "{uidid: %s}" % uuid_str
 
