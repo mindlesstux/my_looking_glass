@@ -29,7 +29,7 @@ ENV BIN_PATH="/app/bin"
 # Update and install some packages
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y python3-pip git
+RUN apt-get install -y python3-pip git curl
 RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing
 
 # Copy the files into the proper app directory
