@@ -30,7 +30,7 @@ ENV BIN_PATH="/app/bin"
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y python3-pip git
-RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv
+RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko
 
 # Copy the files into the proper app directory
 COPY api-server /app/api-server
