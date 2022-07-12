@@ -28,7 +28,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ GITHUB_REF_NAME }}
+          ref: $GITHUB_REF_NAME
           
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
