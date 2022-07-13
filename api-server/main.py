@@ -8,15 +8,13 @@ import json
 import uuid
 import uvicorn
 
+# A bit of a hack but works just in case running manually to develop/debug
 config={}
-config['USERNAME'] = os.environ['SSH_USERNAME']
-config['PASSWORD'] = os.environ['SSH_PASSWORD']
-config['SSH_KEY'] = os.environ['SSH_KEY']
-config['RESULT_PATH'] = os.environ['RESULT_PATH']
-if hasattr(os.environ, 'BIN_PATH'):
-    config['BIN_PATH'] = os.environ['BIN_PATH']
-else:
-    config['BIN_PATH'] = 'bin'
+config['USERNAME'] = os.getenv('SSH_USERNAME',default='example_user')
+config['PASSWORD'] = os.getenv('SSH_PASSWORD',default="example_pass")
+config['SSH_KEY'] = os.getenv('SSH_KEY',default="/app/ssh_id")
+config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
+config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
 
 description = """
 This is a simple attempt at building a looking glass that uses remote linux (for now) to execute some basic tests.
@@ -62,6 +60,7 @@ async def result(
         f = open(file)
         data = json.loads(f.read())
         f.close()
+    
     return data
 
 @app.get(
@@ -87,7 +86,7 @@ async def run_ping(
     uuid_str = str(uuid.uuid1())
     cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location, dst_location)
     stream = os.popen(cmd)
-    return "{uidid: %s}" % uuid_str
+    return "{uidid: %s, url: '/result?uuidid=%s'}" % (uuid_str, uuid_str)
 
 @app.get(
     "/run/mtr", 
