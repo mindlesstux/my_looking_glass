@@ -1,0 +1,8 @@
+version: "3"
+services:
+  mylg-dev:
+    image: ghcr.io/mindlesstux/my_looking_glass:development
+    ports:
+      - 9280:9180
+    volumes:
+      - /docker-store/mylg/data:/app/result_files

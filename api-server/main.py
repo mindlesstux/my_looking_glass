@@ -12,12 +12,10 @@ import uvicorn
 
 # A bit of a hack but works just in case running manually to develop/debug
 config={}
-config['USERNAME'] = os.getenv('SSH_USERNAME',default='example_user')
-config['PASSWORD'] = os.getenv('SSH_PASSWORD',default="example_pass")
-config['SSH_KEY'] = os.getenv('SSH_KEY',default="/app/ssh_id")
 config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
 config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
 config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
+config['HEALTH_CRON'] = os.getenv('HEALTH_CRON',default=15)
 path_static = "%s/static" % (config['WEBGUI_PATH'])
 path_templates = "%s/templates" % (config['WEBGUI_PATH'])
 templates = Jinja2Templates(directory=path_templates)
@@ -176,7 +174,6 @@ async def run_snmp():
 # /static
 # ================================================================================================================================================================
 
-
 app.mount("/static", StaticFiles(directory=path_static), name="static")
 
 # ================================================================================================================================================================
@@ -186,6 +183,14 @@ app.mount("/static", StaticFiles(directory=path_static), name="static")
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def read_item(request: Request):
     return templates.TemplateResponse("start.html", {"request": request, "config_webgui_path": config['WEBGUI_PATH'], "raw_config": config})
+
+# ================================================================================================================================================================
+# /healthcheck
+# ================================================================================================================================================================
+
+@app.get("/healthcheck", response_class=HTMLResponse, include_in_schema=False)
+async def read_item(request: Request):
+    return templates.TemplateResponse("healthcheck.html", {"request": request})
 
 # ================================================================================================================================================================
 # Main entry point
