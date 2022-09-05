@@ -15,8 +15,8 @@ config={}
 config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
 config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
 config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
-config['HEALTH_CRON'] = os.getenv('HEALTH_CRON',default=15)
-config['HEALTH_CRON_COUNT'] = 0
+config['HEALTH_CRON'] = int(os.getenv('HEALTH_CRON',default=15))
+config['HEALTH_CRON_COUNT'] = int(0)
 path_static = "%s/static" % (config['WEBGUI_PATH'])
 path_templates = "%s/templates" % (config['WEBGUI_PATH'])
 templates = Jinja2Templates(directory=path_templates)
