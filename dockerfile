@@ -37,6 +37,7 @@ RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argpa
 # Copy the files into the proper app directory
 COPY api-server /app/api-server
 COPY bin /app/bin
+COPY webinterface /app/webinterface
 RUN mkdir -p /app/result_files
 WORKDIR /app/api-server
 VOLUME /app/result_files
