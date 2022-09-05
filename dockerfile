@@ -20,11 +20,13 @@ ARG SSH_PASSWORD
 ARG SSH_KEY
 ARG RESULT_PATH
 ARG BIN_PATH
+ARG WEBGUI_PATH
 ENV SSH_USERNAME="example_user"
 ENV SSH_PASSWORD="example_pass"
 ENV SSH_KEY="/app/ssh_id"
 ENV RESULT_PATH="/app/result_files"
 ENV BIN_PATH="/app/bin"
+ENV WEBGUI_PATH="/app/webcontent"
 
 # Update and install some packages
 RUN apt-get update
