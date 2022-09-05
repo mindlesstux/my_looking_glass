@@ -1,5 +1,7 @@
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Query, Path, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from typing import Union
 from uuid import UUID
 import glob
@@ -15,6 +17,7 @@ config['PASSWORD'] = os.getenv('SSH_PASSWORD',default="example_pass")
 config['SSH_KEY'] = os.getenv('SSH_KEY',default="/app/ssh_id")
 config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
 config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
+config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
 
 description = """
 This is a simple attempt at building a looking glass that uses remote linux (for now) to execute some basic tests.
@@ -53,7 +56,7 @@ app = FastAPI(
     description="Fetches a result json file.",
     )
 async def result(
-    uuidid: UUID
+        uuidid: UUID
     ):
     data = {}
     for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], uuidid)):
@@ -129,6 +132,16 @@ async def run_nmap():
     )
 async def run_snmp():
     return False
+
+path_static = "%s/static" % (config['WEBGUI_PATH'])
+path_templates = "%s/templates" % (config['WEBGUI_PATH'])
+app.mount("/static", StaticFiles(directory=path_static), name="static")
+templates = Jinja2Templates(directory=path_templates)
+
+@app.get("/", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("start.html", {"request": request, "config_webgui_path": config['WEBGUI_PATH'], "raw_config": config})
+
 
 if __name__ == '__main__':
     print(json.dumps(config))
