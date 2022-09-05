@@ -138,7 +138,7 @@ path_templates = "%s/templates" % (config['WEBGUI_PATH'])
 app.mount("/static", StaticFiles(directory=path_static), name="static")
 templates = Jinja2Templates(directory=path_templates)
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def read_item(request: Request):
     return templates.TemplateResponse("start.html", {"request": request, "config_webgui_path": config['WEBGUI_PATH'], "raw_config": config})
 
