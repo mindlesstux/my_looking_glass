@@ -1,5 +1,5 @@
 # Use ubuntu as our base
-FROM ubuntu:focal AS build
+FROM ubuntu:jammy AS build
 
 # Some information labels
 LABEL version=10001
@@ -15,18 +15,14 @@ LABEL org.opencontainers.image.description="This is a 'looking glass' applicatio
 EXPOSE 9180
 
 # Build out the OS environmental variables
-ARG SSH_USERNAME
-ARG SSH_PASSWORD
-ARG SSH_KEY
 ARG RESULT_PATH
 ARG BIN_PATH
 ARG WEBGUI_PATH
-ENV SSH_USERNAME="example_user"
-ENV SSH_PASSWORD="example_pass"
-ENV SSH_KEY="/app/ssh_id"
+ARG HEALTH_CRON
 ENV RESULT_PATH="/app/result_files"
 ENV BIN_PATH="/app/bin"
 ENV WEBGUI_PATH="/app/webinterface"
+ENV HEALTH_CRON=15
 
 # Update and install some packages
 RUN apt-get update
@@ -47,7 +43,7 @@ VOLUME /app/result_files
 # Timeout         = Check should take no longer than this
 # Start Period    = Time for container to "get its legs", ignore fails in this time
 # Retries         = Number of times a fail needs to trigger unhealthy
-HEALTHCHECK  --interval=1m --timeout=3s --start-period=15s --retries=3  CMD curl --fail http://localhost:9180/ || exit 1
+HEALTHCHECK  --interval=1m --timeout=3s --start-period=15s --retries=3  CMD curl --fail http://localhost:9180/healthcheck || exit 1
 
 #CMD  ["uvicorn", "main:app", "--reload" ]
 CMD  ["python3", "/app/api-server/main.py"]
