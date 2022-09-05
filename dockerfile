@@ -26,7 +26,7 @@ ENV SSH_PASSWORD="example_pass"
 ENV SSH_KEY="/app/ssh_id"
 ENV RESULT_PATH="/app/result_files"
 ENV BIN_PATH="/app/bin"
-ENV WEBGUI_PATH="/app/webcontent"
+ENV WEBGUI_PATH="/app/webinterface"
 
 # Update and install some packages
 RUN apt-get update
