@@ -1,1 +1,32 @@
-Everything must be OK! (maybe?)
+{# templates/heathcheck.html #}
+
+{% extends "siteframe-base.html" %}
+
+{% block title %}
+MyLG Dev Branch - HealthCheck
+{% endblock title %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td>Result Path</td>
+            <td>{{ raw_config.RESULT_PATH }}</td>
+        </tr>
+        <tr>
+            <td>Script Bin Path</td>
+            <td>{{ raw_config.BIN_PATH }}</td>
+        </tr>
+        <tr>
+            <td>WebGUI Path</td>
+            <td>{{ raw_config.WEBGUI_PATH }}</td>
+        </tr>
+        <tr>
+            <td>Healthcheck Cron Interval</td>
+            <td>{{ raw_config.HEALTH_CRON }}</td>
+        </tr>
+        <tr>
+            <td>Healthcheck Cron Count</td>
+            <td>{{ raw_config.HEALTH_CRON_COUNT }}</td>
+        </tr>
+    </table>
+{% endblock content %}

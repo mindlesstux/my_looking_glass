@@ -16,6 +16,7 @@ config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
 config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
 config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
 config['HEALTH_CRON'] = os.getenv('HEALTH_CRON',default=15)
+config['HEALTH_CRON_COUNT'] = 0
 path_static = "%s/static" % (config['WEBGUI_PATH'])
 path_templates = "%s/templates" % (config['WEBGUI_PATH'])
 templates = Jinja2Templates(directory=path_templates)
@@ -182,7 +183,7 @@ app.mount("/static", StaticFiles(directory=path_static), name="static")
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def read_item(request: Request):
-    return templates.TemplateResponse("start.html", {"request": request, "config_webgui_path": config['WEBGUI_PATH'], "raw_config": config})
+    return templates.TemplateResponse("start.html", {"request": request})
 
 # ================================================================================================================================================================
 # /healthcheck
@@ -190,12 +191,15 @@ async def read_item(request: Request):
 
 @app.get("/healthcheck", response_class=HTMLResponse, include_in_schema=False)
 async def read_item(request: Request):
-    return templates.TemplateResponse("healthcheck.html", {"request": request})
+    config['HEALTH_CRON_COUNT'] = config['HEALTH_CRON_COUNT'] + 1
+    if config['HEALTH_CRON_COUNT'] >= config['HEALTH_CRON']:
+        # TODO: handle some cron tasks
+        config['HEALTH_CRON_COUNT'] = 0
+    return templates.TemplateResponse("healthcheck.html", {"request": request, "raw_config": config})
 
 # ================================================================================================================================================================
 # Main entry point
 # ================================================================================================================================================================
 
 if __name__ == '__main__':
-    print(json.dumps(config))
     uvicorn.run(app, port=9180, host='0.0.0.0')

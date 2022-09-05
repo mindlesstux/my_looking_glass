@@ -1,0 +1,16 @@
+{# templates/base.html #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{{ title }}{% endblock title %}</title>
+</head>
+
+<body>
+  {% block content %}
+    <h1>Welcome to {{ title }}!</h1>
+  {% endblock content %}
+</body>
+<footer><a href="/redoc">ReDoc</a> || <a href="/docs">API Docs</a></footer>
+</html>
