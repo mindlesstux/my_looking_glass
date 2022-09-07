@@ -37,6 +37,7 @@ def write_result(return_dict):
 
 try:
     return_dict = {}
+    return_dict['type'] = "ping"
     return_dict['ping_target'] = args.targethost[0]
     return_dict['ping_source'] = args.sourcehost[0]
     return_dict['complete'] = False
