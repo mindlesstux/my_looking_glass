@@ -116,34 +116,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for key, value in recent_files.items() %}
+        {% for key, value in recent_files.items() %}
                     <tr>
                         <td><a href="/result?fetch_uuid={{ value.uuid }}">{{ key }} </a></td>
                         <td>{{ value.filesize_bytes }} Bytes</td>
                         <td>{{ value.dt_c }}</td>
                         <td>{{ value.dt_m }}</td>
 
-                        {% if value.process_complete is true %}
-                            {% if 'complete' in value.status %}
-                            <td><i class="fas fa-check-circle text-success"></i> {{ value.status }}</td>
-                            <td><a href="/result/raw?fetch_uuid={{ value.uuid }}"><i class="fas fa-save"></i></a></td>
-                            {% elif 'failed' in value.status  %}
-                            <td><i class="fas fa-times-circle text-danger"></i> {{ value.status }}</td>
-                            <td><a href="/result/raw?fetch_uuid={{ value.uuid }}"><i class="fas fa-save"></i></a></td>
-                            {% else %}
-                            <td><i class="fas fa-sync"></i></i> {{ value.status }}</td>
-                            <td><a href="/result/raw?fetch_uuid={{ value.uuid }}"><i class="fas fa-save"></i></a></td>
-                            {% endif %}
-                        {% else %}
+                {% if value.process_complete is true %}
+                    {% if 'complete' in value.status %}
+                        <td><i class="fas fa-check-circle text-success"></i> {{ value.status }}</td>
+                        <td><a href="/result/raw?fetch_uuid={{ value.uuid }}"><i class="fas fa-save"></i></a></td>
+                    {% elif 'failed' in value.status  %}
+                        <td><i class="fas fa-times-circle text-danger"></i> {{ value.status }}</td>
+                        <td><a href="/result/raw?fetch_uuid={{ value.uuid }}"><i class="fas fa-save"></i></a></td>
+                    {% else %}
+                        <td><i class="fas fa-sync"></i></i> {{ value.status }}</td>
+                        <td><a href="/result/raw?fetch_uuid={{ value.uuid }}"><i class="fas fa-save"></i></a></td>
+                    {% endif %}
+                {% else %}
                         <td><i class="fas fa-sync"></i></i> {{ value.status }}</td>
                         <td></td>
-                        {% endif %} 
+                {% endif %} 
 
                         
                         <!-- {{ value.process_complete }} -->
                         <!-- {{ value.status }} -->
                     </tr>
-                    {% endfor %}
+        {% endfor %}
                 </tbody>
             </table>
         </div>
