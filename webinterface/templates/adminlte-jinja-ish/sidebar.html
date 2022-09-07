@@ -28,6 +28,12 @@
                     <p>Test Sources</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="/result" class="nav-link {% if 'result' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-warning"></i>
+                    <p>Result</p>
+                </a>
+            </li>
             <li class="nav-header">Tools/Tests</li>
             <li class="nav-item">
                 <a href="/run/ping" class="nav-link {% if 'tool-ping' in segment %} active {% endif %}">
@@ -85,6 +91,7 @@
                     <p>ReDoc</p>
                 </a>
             </li>
+            {% if config.SHOW_DEBUG_THINGS is true %}
             <li class="nav-header">Debug Things</li>
             <li class="nav-item">
                 <a href="/healthcheck" class="nav-link {% if 'debug-healthcheck' in segment %} active {% endif %}">
@@ -94,10 +101,11 @@
             </li>
             <li class="nav-item">
                 <a href="/debug" class="nav-link {% if 'debug-stuff' in segment %} active {% endif %}">
-                    <i class="far fa-circle nav-icon text-danger"></i>
-                    <p>Stuff</p>
+                    <i class="far fa-circle nav-icon text-info"></i>
+                    <p>Debug Stuff</p>
                 </a>
             </li>
+            {% endif %}
         </ul>
     </nav>
       <!-- /.sidebar-menu -->

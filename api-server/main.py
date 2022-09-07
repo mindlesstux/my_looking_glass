@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Query, Path, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from typing import Union
+from typing import Optional, Union
 from uuid import UUID
 import glob
 import os
@@ -17,9 +17,10 @@ config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
 config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
 config['HEALTH_CRON'] = int(os.getenv('HEALTH_CRON',default=15))
 config['HEALTH_CRON_COUNT'] = int(0)
-path_static = "%s/static" % (config['WEBGUI_PATH'])
-path_templates = "%s/templates" % (config['WEBGUI_PATH'])
-templates = Jinja2Templates(directory=path_templates)
+config['SHOW_DEBUG_THINGS'] = False
+config['path_static'] = "%s/static" % (config['WEBGUI_PATH'])
+config['path_templates'] = "%s/templates" % (config['WEBGUI_PATH'])
+templates = Jinja2Templates(directory=config['path_templates'] )
 
 # ================================================================================================================================================================
 # This is for the fastapi docs pages
@@ -47,7 +48,7 @@ tags_metadata = [
 app = FastAPI(
     title="My Looking Glass",
     description=description,
-    version="10001",
+    version="10002",
     contact={
         "name": "MindlessTux",
         "url": "https://github.com/mindlesstux/my_looking_glass",
@@ -62,10 +63,33 @@ app = FastAPI(
 @app.get(
     "/result", 
     tags=["Tests In Development"],
-    summary="Fetch a result json",
-    description="Fetches a result json file.",
+    summary="Fetch a result json via GUI",
+    description="Fetches a result json file via GUI.",
+    response_class=HTMLResponse,
     )
 async def result(
+        request: Request,
+        fetch_uuid: Union[UUID, None] = None,
+    ):
+    data = None
+    for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], fetch_uuid)):
+        f = open(file)
+        data = json.loads(f.read())
+        f.close()
+    
+    return templates.TemplateResponse("result.html", {"request": request, "config": config, "segment": 'result', "uuid": fetch_uuid, "data": data })
+
+# ================================================================================================================================================================
+# /result/raw
+# ================================================================================================================================================================
+
+@app.get(
+    "/result/raw", 
+    tags=["Tests In Development"],
+    summary="Fetch a raw result json",
+    description="Fetches a raw result json file.",
+    )
+async def result_raw(
         uuidid: UUID
     ):
     data = {}
@@ -86,7 +110,7 @@ async def result(
     response_class=HTMLResponse,
     include_in_schema=False)
 async def read_item(request: Request):
-    return templates.TemplateResponse("tool-ping-get.html", {"request": request, "raw_config": config, "segment": 'tool-ping'})
+    return templates.TemplateResponse("tool-ping-get.html", {"request": request, "config": config, "segment": 'tool-ping'})
 
 
 @app.post(
@@ -184,7 +208,7 @@ async def run_snmp():
 # /static
 # ================================================================================================================================================================
 
-app.mount("/static", StaticFiles(directory=path_static), name="static")
+app.mount("/static", StaticFiles(directory=config['path_static']), name="static")
 
 # ================================================================================================================================================================
 # /
@@ -192,7 +216,21 @@ app.mount("/static", StaticFiles(directory=path_static), name="static")
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def read_item(request: Request):
-    return templates.TemplateResponse("start.html", {"request": request, "segment": 'index'})
+    return templates.TemplateResponse("start.html", {"request": request, "config": config, "segment": 'index'})
+
+
+# ================================================================================================================================================================
+# /flipDebug
+# ================================================================================================================================================================
+
+@app.get("/flipDebug", response_class=HTMLResponse, include_in_schema=False)
+async def read_item(request: Request):
+    if config['SHOW_DEBUG_THINGS'] == False:
+        config['SHOW_DEBUG_THINGS'] = True
+    else:
+        config['SHOW_DEBUG_THINGS'] = False
+    return RedirectResponse("/")
+
 
 # ================================================================================================================================================================
 # /healthcheck
@@ -204,7 +242,16 @@ async def read_item(request: Request):
     if config['HEALTH_CRON_COUNT'] >= config['HEALTH_CRON']:
         # TODO: handle some cron tasks
         config['HEALTH_CRON_COUNT'] = 0
-    return templates.TemplateResponse("healthcheck.html", {"request": request, "raw_config": config, "segment": 'healthcheck'})
+    return templates.TemplateResponse("healthcheck.html", {"request": request, "config": config, "segment": 'debug-healthcheck'})
+
+# ================================================================================================================================================================
+# /debug
+# ================================================================================================================================================================
+
+@app.get("/debug", response_class=HTMLResponse, include_in_schema=False)
+async def read_item(request: Request):
+
+    return templates.TemplateResponse("debug.html", {"request": request, "config": config, "segment": 'debug-stuff'})
 
 # ================================================================================================================================================================
 # Main entry point
