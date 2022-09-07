@@ -4,16 +4,18 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Optional, Union
 from uuid import UUID
+import datetime
 import glob
 import os
 import json
 import uuid
+from sympy import limit
 import uvicorn
 
 # A bit of a hack but works just in case running manually to develop/debug
 config={}
-config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
-config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
+config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/home/bdavenport/CodeProjects/my_looking_glass/result_files")
+config['BIN_PATH'] = os.getenv('BIN_PATH',default="./bin")
 config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
 config['HEALTH_CRON'] = int(os.getenv('HEALTH_CRON',default=15))
 config['HEALTH_CRON_COUNT'] = int(0)
@@ -57,6 +59,16 @@ app = FastAPI(
 )
 
 # ================================================================================================================================================================
+# Random functions used later
+# ================================================================================================================================================================
+
+def indexExists(list,index):
+    if 0 <= index < len(list):
+        return True
+    else:
+        return False
+
+# ================================================================================================================================================================
 # /result
 # ================================================================================================================================================================
 
@@ -72,12 +84,31 @@ async def result(
         fetch_uuid: Union[UUID, None] = None,
     ):
     data = None
-    for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], fetch_uuid)):
-        f = open(file)
-        data = json.loads(f.read())
-        f.close()
-    
-    return templates.TemplateResponse("result.html", {"request": request, "config": config, "segment": 'result', "uuid": fetch_uuid, "data": data })
+    files = None
+    if fetch_uuid is not None:
+        for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], fetch_uuid)):
+            f = open(file)
+            data = json.loads(f.read())
+            f.close()
+    else:
+        files = {}
+        file_list = sorted(glob.iglob('%s/*.json' % (config['RESULT_PATH'])), key=os.path.getctime, reverse=True)
+        for x in range(0, 9):
+            if indexExists(file_list, x):
+                path = file_list[x]
+                basename = os.path.basename(path)
+                filesize = os.stat(path)
+                m_time = os.path.getmtime(path)
+                dt_m = datetime.datetime.fromtimestamp(m_time)
+                c_time = os.path.getctime(path)
+                dt_c = datetime.datetime.fromtimestamp(c_time)
+                files[basename] = {}
+                files[basename]['dt_c'] = dt_c
+                files[basename]['dt_m'] = dt_m
+                files[basename]['filesize_bytes'] = filesize.st_size
+                files[basename]['uuid'] = str(str(basename).split(sep="_")[1]).split(sep=".")[0]
+
+    return templates.TemplateResponse("result.html", {"request": request, "config": config, "segment": 'result', "uuid": fetch_uuid, "data": data, "recent_files": files })
 
 # ================================================================================================================================================================
 # /result/raw

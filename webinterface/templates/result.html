@@ -32,11 +32,41 @@
         </section>
 
     {% if uuid is not none %}
-        UUID GIVEN!
         {% if data is not none %}
             DATA ALSO FOUND!
         {% else %}
-            ???  No data...
+    <!-- Main content -->
+    <section class="content">
+        <!-- Horizontal Form -->
+        <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Fetch UUID</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-exclamation-triangle"></i> Attention!</h5>
+                That UUID is not found.
+            </div>
+            <!-- form start -->
+            <form class="form-horizontal" action="/result" method="get" name="get_uuid" autocomplete="off">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="fetch_uuid" class="col-sm-2 col-form-label">UUID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="fetch_uuid" name="fetch_uuid" placeholder="1e652fd7-6e1c-4edc-8b6d-8e61a5bcbf12">
+                        </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" id=”submit” class="btn btn-info">Fetch</button>
+                </div>
+                <!-- /.card-footer -->
+            </form>
+          </div>
+          <!-- /.card -->
+    </section>
+  <!-- /.content -->
         {% endif %}
     {% else %}
     <!-- Main content -->
@@ -66,6 +96,37 @@
               <!-- /.card -->
         </section>
       <!-- /.content -->
+    {% endif %}
+    {% if recent_files is not none %}
+    <section class="content"><div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Recent Tests</h3>
+        </div>
+
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Test/File</th>
+                        <th>Size</th>
+                        <th>DateTime Created</th>
+                        <th>DateTime Modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in recent_files.items() %}
+                    <tr>
+                        <td><a href="/result?fetch_uuid={{ value.uuid }}">{{ key }}</a></td>
+                        <td>{{ value.filesize_bytes }} Bytes</td>
+                        <td>{{ value.dt_c }}</td>
+                        <td>{{ value.dt_m }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div></section>
     {% endif %}
     </div>
 
