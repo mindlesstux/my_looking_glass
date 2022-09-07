@@ -121,10 +121,27 @@ async def result(
     description="Fetches a raw result json file.",
     )
 async def result_raw(
-        uuidid: UUID
+        fetch_uuid: UUID,
     ):
     data = {}
-    for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], uuidid)):
+    for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], fetch_uuid)):
+        f = open(file)
+        data = json.loads(f.read())
+        f.close()
+    
+    return data
+
+@app.post(
+    "/result/raw", 
+    tags=["Tests In Development"],
+    summary="Fetch a raw result json",
+    description="Fetches a raw result json file.",
+    )
+async def result_raw(
+        fetch_uuid: UUID,
+    ):
+    data = {}
+    for file in glob.glob('%s/*%s.json' % (config['RESULT_PATH'], fetch_uuid)):
         f = open(file)
         data = json.loads(f.read())
         f.close()
