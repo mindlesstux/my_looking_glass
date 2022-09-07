@@ -47,5 +47,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}:development
+          tags: ghcr.io/${{ github.repository }}:development-gui
 
