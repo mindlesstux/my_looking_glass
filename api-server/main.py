@@ -14,7 +14,7 @@ import uvicorn
 
 # A bit of a hack but works just in case running manually to develop/debug
 config={}
-config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/home/bdavenport/CodeProjects/my_looking_glass/result_files")
+config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="./result_files")
 config['BIN_PATH'] = os.getenv('BIN_PATH',default="./bin")
 config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
 config['HEALTH_CRON'] = int(os.getenv('HEALTH_CRON',default=15))
