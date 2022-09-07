@@ -44,7 +44,7 @@ VOLUME /app/result_files
 # Timeout         = Check should take no longer than this
 # Start Period    = Time for container to "get its legs", ignore fails in this time
 # Retries         = Number of times a fail needs to trigger unhealthy
-HEALTHCHECK  --interval=1m --timeout=3s --start-period=15s --retries=3  CMD curl --fail http://localhost:9180/healthcheck || exit 1
+HEALTHCHECK  --interval=1m --timeout=3s --start-period=15s --retries=3  CMD curl --silent --output /dev/null --fail http://localhost:9180/healthcheck || exit 1
 
 #CMD  ["uvicorn", "main:app", "--reload" ]
 CMD  ["python3", "/app/api-server/main.py"]
