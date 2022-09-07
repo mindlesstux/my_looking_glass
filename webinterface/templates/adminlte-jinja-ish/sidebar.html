@@ -1,0 +1,107 @@
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+      <!--<img src="/static/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">-->
+      <span class="brand-text font-weight-light">My Looking Glass</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+ 
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+            <li class="nav-item">
+            <a href="/" class="nav-link {% if 'index' in segment %} active {% endif %}">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                Welcome
+                </p>
+            </a>
+            </li>
+            <li class="nav-item">
+                <a href="/test-sources" class="nav-link {% if 'test-sources' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>Test Sources</p>
+                </a>
+            </li>
+            <li class="nav-header">Tools/Tests</li>
+            <li class="nav-item">
+                <a href="/run/ping" class="nav-link {% if 'tool-ping' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-warning"></i>
+                    <p>Ping</p>
+                </a>
+            </li>
+            <li class="nav-header">Tools/Tests Coming Soon</li>
+            <li class="nav-item">
+                <a href="/run/mtr" class="nav-link {% if 'tool-mtr' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>MTR</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/run/whois" class="nav-link {% if 'tool-whois' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>Whois</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/run/curl" class="nav-link {% if 'tool-curl' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>Curl</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/run/openssl" class="nav-link {% if 'tool-openssl' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>OpenSSL Client</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/run/nmap" class="nav-link {% if 'tool-nmap' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>nmap</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/run/snmp" class="nav-link {% if 'tool-snmp' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>SNMP</p>
+                </a>
+            </li>
+            <li class="nav-header">API Docs</li>
+            <li class="nav-item">
+                <a href="/docs" class="nav-link {% if 'api-docs' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-info"></i>
+                    <p>Swagger UI</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/docs" class="nav-link {% if 'api-re' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-info"></i>
+                    <p>ReDoc</p>
+                </a>
+            </li>
+            <li class="nav-header">Debug Things</li>
+            <li class="nav-item">
+                <a href="/healthcheck" class="nav-link {% if 'debug-healthcheck' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-info"></i>
+                    <p>Healthcheck</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/debug" class="nav-link {% if 'debug-stuff' in segment %} active {% endif %}">
+                    <i class="far fa-circle nav-icon text-danger"></i>
+                    <p>Stuff</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+  

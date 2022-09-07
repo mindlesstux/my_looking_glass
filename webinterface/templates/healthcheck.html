@@ -1,32 +1,103 @@
-{# templates/heathcheck.html #}
+{% extends "adminlte-jinja-ish/base.html" %}
 
-{% extends "siteframe-base.html" %}
+{% block title %} HealthCheck {% endblock %} 
 
-{% block title %}
-MyLG Dev Branch - HealthCheck
-{% endblock title %}
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini pace-primary {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- pace-progress -->
+  <link rel="stylesheet" href="/static/assets/plugins/pace-progress/themes/black/pace-theme-flat-top.css">
+  <!-- adminlte-->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+
+{% endblock stylesheets %}
+
 
 {% block content %}
-    <table>
-        <tr>
-            <td>Result Path</td>
-            <td>{{ raw_config.RESULT_PATH }}</td>
-        </tr>
-        <tr>
-            <td>Script Bin Path</td>
-            <td>{{ raw_config.BIN_PATH }}</td>
-        </tr>
-        <tr>
-            <td>WebGUI Path</td>
-            <td>{{ raw_config.WEBGUI_PATH }}</td>
-        </tr>
-        <tr>
-            <td>Healthcheck Cron Interval</td>
-            <td>{{ raw_config.HEALTH_CRON }}</td>
-        </tr>
-        <tr>
-            <td>Healthcheck Cron Count</td>
-            <td>{{ raw_config.HEALTH_CRON_COUNT }}</td>
-        </tr>
-    </table>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Welcome</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Some values for healthchecks</h3>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Thing</th>
+                                            <th>Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Result Path</td>
+                                            <td>{{ raw_config.RESULT_PATH }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Script Bin Path</td>
+                                            <td>{{ raw_config.BIN_PATH }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>WebGUI Path</td>
+                                            <td>{{ raw_config.WEBGUI_PATH }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Healthcheck Cron Interval</td>
+                                            <td>{{ raw_config.HEALTH_CRON }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Healthcheck Cron Count</td>
+                                            <td>{{ raw_config.HEALTH_CRON_COUNT }}</td>
+                                        </tr>
+                                </table>
+                            </div><!-- /.card-body -->
+            
+                            <div class="card-footer">
+                            </div><!-- /.card-footer-->
+                        </div><!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section><!-- /.content -->
+    </div>
+
+
 {% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- pace-progress -->
+  <script src="/static/assets/plugins/pace-progress/pace.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <!--<script src="/static/assets/js/demo.js"></script>-->
+
+{% endblock javascripts %}

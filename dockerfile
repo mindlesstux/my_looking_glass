@@ -29,6 +29,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y python3-pip git curl
 RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing jinja2
+RUN apt autoremove -y
 
 # Copy the files into the proper app directory
 COPY api-server /app/api-server

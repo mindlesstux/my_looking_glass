@@ -80,7 +80,16 @@ async def result(
 # /run/ping
 # ================================================================================================================================================================
 
+
 @app.get(
+    "/run/ping", 
+    response_class=HTMLResponse,
+    include_in_schema=False)
+async def read_item(request: Request):
+    return templates.TemplateResponse("tool-ping-get.html", {"request": request, "raw_config": config, "segment": 'tool-ping'})
+
+
+@app.post(
     "/run/ping", 
     tags=["Tests In Development"],
     summary="Run a ping test",
@@ -183,7 +192,7 @@ app.mount("/static", StaticFiles(directory=path_static), name="static")
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def read_item(request: Request):
-    return templates.TemplateResponse("start.html", {"request": request})
+    return templates.TemplateResponse("start.html", {"request": request, "segment": 'index'})
 
 # ================================================================================================================================================================
 # /healthcheck
@@ -195,7 +204,7 @@ async def read_item(request: Request):
     if config['HEALTH_CRON_COUNT'] >= config['HEALTH_CRON']:
         # TODO: handle some cron tasks
         config['HEALTH_CRON_COUNT'] = 0
-    return templates.TemplateResponse("healthcheck.html", {"request": request, "raw_config": config})
+    return templates.TemplateResponse("healthcheck.html", {"request": request, "raw_config": config, "segment": 'healthcheck'})
 
 # ================================================================================================================================================================
 # Main entry point
