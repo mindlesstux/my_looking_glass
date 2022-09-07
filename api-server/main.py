@@ -9,7 +9,7 @@ import glob
 import os
 import json
 import uuid
-from sympy import limit
+#from sympy import limit
 import uvicorn
 
 # A bit of a hack but works just in case running manually to develop/debug
