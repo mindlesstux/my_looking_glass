@@ -1,3 +1,4 @@
+from email.mime import base
 from fastapi import FastAPI, Query, Path, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -102,11 +103,26 @@ async def result(
                 dt_m = datetime.datetime.fromtimestamp(m_time)
                 c_time = os.path.getctime(path)
                 dt_c = datetime.datetime.fromtimestamp(c_time)
+
+                tmp_file_data = {}
+                for tmp_file in glob.glob(path):
+                    f = open(tmp_file)
+                    tmp_file_data = json.loads(f.read())
+                    f.close()
+
                 files[basename] = {}
                 files[basename]['dt_c'] = dt_c
                 files[basename]['dt_m'] = dt_m
                 files[basename]['filesize_bytes'] = filesize.st_size
                 files[basename]['uuid'] = str(str(basename).split(sep="_")[1]).split(sep=".")[0]
+                if 'complete' in tmp_file_data:
+                    files[basename]['process_complete'] = tmp_file_data['complete']
+                else:
+                    files[basename]['process_complete'] = None
+                if 'status' in tmp_file_data:
+                    files[basename]['status'] = tmp_file_data['status']
+                else:
+                    files[basename]['status'] = None
 
     return templates.TemplateResponse("result.html", {"request": request, "config": config, "segment": 'result', "uuid": fetch_uuid, "data": data, "recent_files": files })
 
