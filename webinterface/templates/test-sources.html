@@ -51,15 +51,14 @@
                                         {% for key, value in srv_config.ssh_hosts.items() %}
                                         <tr data-widget="expandable-table" aria-expanded="false">
                                             <td>{{ key }}</td>
-                                            <td>{{ value[location_physical] }}</td>
-                                            <td>{{ value[location_name] }}</td>
-                                            <td>{{ value[location_comment] }}</td>
+                                            <td>{{ value.location_physical }}</td>
+                                            <td>{{ value.location_name }}</td>
+                                            <td>{{ value.location_comment }}</td>
                                         </tr>
                                         <tr class="expandable-body d-none">
                                             <td colspan="5">
                                             <p style="display: none;">
-                                                {{ value[description] }}
-                                                {{ value }}
+                                                {{ value.description }}
                                             </p>
                                             </td>
                                         </tr>
