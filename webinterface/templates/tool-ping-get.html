@@ -39,26 +39,13 @@
             <div class="card-header">
 
             </div>
-            <form id="quickForm">
+            <form id="quickForm" action="/run/ping" method="post">
               <div class="card-body">
                 <div class="form-group">
                   <label for="dst_location">Target:</label>
                   <input type="text" name="dst_location" class="form-control" id="dst_location" placeholder="google.com">
                 </div>
-                <div class="form-group">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="ipv4_6" checked>
-                    <label class="form-check-label">Both</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="ipv4_6">
-                    <label class="form-check-label">IPv4</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="ipv4_6">
-                    <label class="form-check-label">IPv6</label>
-                  </div>
-                </div>
+                <input type="hidden" id="src_location_enum" name="src_location_enum" value="vultr_nj_usa">
               </div>
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
