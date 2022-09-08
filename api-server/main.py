@@ -225,13 +225,14 @@ async def run_ping(
     ):
     uuid_str = str(uuid.uuid1())
     try:
-        print("          PRINT - Trying to ping %s from %s" % (dst_location, src_location_enum.name))
-        logger.debug("          LOGGR - Trying to ping %s from %s" % (dst_location, src_location_enum.name))
+        print("          Trying to ping %s from %s" % (dst_location, src_location_enum.name))
         cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location_enum.name, dst_location)
+        print("          CMD: %s" %(cmd))
+        stream = os.popen(cmd)
     except Exception as e:
         print("Exception:")
         print("   " + e)
-    stream = os.popen(cmd)
+    
     return "{uidid: %s, url: '/result?uuidid=%s'}" % (uuid_str, uuid_str)
 
 # ================================================================================================================================================================
