@@ -8,8 +8,8 @@ import traceback
 
 # A bit of a hack but works just in case running manually to develop/debug
 config={}
-config['CONFIGJSON_PATH'] = os.getenv('CONFIGJSON_PATH',default="./config.json")
-config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="./result_files")
+config['CONFIGJSON_PATH'] = os.getenv('CONFIGJSON_PATH',default="/app/config.json")
+config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
 config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
 
 parser = argparse.ArgumentParser(prog='lg_cmd_ping.py', description="This is a wrapper script to ping to be called from an API server.")
@@ -17,7 +17,7 @@ cmd = "ping"
 
 # Load the config.json
 srv_config = {}
-with open('config.json') as json_file:
+with open(config['CONFIGJSON_PATH']) as json_file:
     srv_config = json.load(json_file)
 
 # Read our cmdline args
