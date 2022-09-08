@@ -1,6 +1,7 @@
 #from email.mime import base
 from enum import Enum
 from fastapi import FastAPI, Query, Path, Request
+from fastapi.logger import logger
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -8,6 +9,7 @@ from typing import Optional, Union
 from uuid import UUID
 import datetime
 import glob
+import logging
 import os
 import json
 import uuid
@@ -61,6 +63,13 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata
 )
+gunicorn_logger = logging.getLogger('gunicorn.error')
+logger.handlers = gunicorn_logger.handlers
+if __name__ != "main":
+    logger.setLevel(gunicorn_logger.level)
+else:
+    logger.setLevel(logging.DEBUG)
+
 
 # ================================================================================================================================================================
 # Random functions used later
@@ -96,6 +105,7 @@ SrcLocationEnum = Enum("TypeEnum", srv_enum_values)
     summary="Fetch a result json via GUI",
     description="Fetches a result json file via GUI.",
     response_class=HTMLResponse,
+    include_in_schema=False
     )
 async def result(
         request: Request,
@@ -214,7 +224,13 @@ async def run_ping(
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
     uuid_str = str(uuid.uuid1())
-    cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location_enum.name, dst_location)
+    try:
+        print("          PRINT - Trying to ping %s from %s" % (dst_location, src_location_enum.name))
+        logger.debug("          LOGGR - Trying to ping %s from %s" % (dst_location, src_location_enum.name))
+        cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location_enum.name, dst_location)
+    except Exception as e:
+        print("Exception:")
+        print("   " + e)
     stream = os.popen(cmd)
     return "{uidid: %s, url: '/result?uuidid=%s'}" % (uuid_str, uuid_str)
 
