@@ -45,6 +45,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
+#          tags: |
+#            ghcr.io/${{ github.repository }}:development
+#            mindlesstux/my_looking_glass:development
           tags: |
-            ghcr.io/${{ github.repository }}:development
             mindlesstux/my_looking_glass:development
