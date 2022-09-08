@@ -1,6 +1,5 @@
 from textwrap import dedent
 import os
-from tkinter import EXCEPTION
 import paramiko
 import json
 import argparse
