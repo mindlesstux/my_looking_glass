@@ -21,6 +21,7 @@ config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH',default='./webinterface')
 config['HEALTH_CRON'] = int(os.getenv('HEALTH_CRON',default=15))
 config['HEALTH_CRON_COUNT'] = int(0)
 config['SHOW_DEBUG_THINGS'] = False
+config['CAPABILITIES_DEFAULT'] bool(os.getenv('WEBGUI_PATH',default=False))
 config['path_static'] = "%s/static" % (config['WEBGUI_PATH'])
 config['path_templates'] = "%s/templates" % (config['WEBGUI_PATH'])
 templates = Jinja2Templates(directory=config['path_templates'] )

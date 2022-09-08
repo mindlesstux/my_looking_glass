@@ -130,3 +130,4 @@ dmypy.json
 
 # PROJECT ONLY
 result_files/*.json
+config.json

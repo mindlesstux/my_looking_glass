@@ -1,0 +1,35 @@
+{
+    "ssh_creds": {
+        "ABC": {
+            "username": "username",
+            "password": "password"
+        },
+        "DEF": {
+            "username": "user",
+            "ssh_key": "/app/ssh_id"
+        },
+        "HIJ": {
+            "username": "idiotuser",
+            "password": "idiotpass",
+            "ssh_key": "/app/ssh_id"
+        }
+    },
+    "ssh_hosts": {
+        "host1": {
+            "location_physical": "Basement, Parents, USA",
+            "location_name": "Frodo",
+            "location_comment": "",
+            "description": "Bastion SSH Host",
+            "hostname": "10.10.10.10",
+            "ssh_cred": "HIJ"
+        },
+        "host2": {
+            "location_physical": "Attic, Home, USA",
+            "location_name": "Phoenix",
+            "location_comment": "",
+            "description": "Bastion SSH Host",
+            "hostname": "192.168.100.50",
+            "ssh_cred": "HIJ"
+        }
+    }
+}

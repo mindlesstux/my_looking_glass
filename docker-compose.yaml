@@ -6,3 +6,4 @@ services:
       - 9280:9180
     volumes:
       - /docker-store/mylg/data:/app/result_files
+      - /docker-store/mylg/config.json:/app/config.json:ro
