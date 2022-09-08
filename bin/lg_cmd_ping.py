@@ -9,10 +9,8 @@ import traceback
 
 # A bit of a hack but works just in case running manually to develop/debug
 config={}
-config['USERNAME'] = os.getenv('SSH_USERNAME',default='example_user')
-config['PASSWORD'] = os.getenv('SSH_PASSWORD',default="example_pass")
-config['SSH_KEY'] = os.getenv('SSH_KEY',default="/app/ssh_id")
-config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
+config['CONFIGJSON_PATH'] = os.getenv('CONFIGJSON_PATH',default="./config.json")
+config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="./result_files")
 config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
 
 parser = argparse.ArgumentParser(prog='lg_cmd_ping.py', description="This is a wrapper script to ping to be called from an API server.")
@@ -91,12 +89,20 @@ try:
     return_dict['status'] = "connected"
     write_result(return_dict)
 
+
+    return_dict['status'] = "running command"
+    write_result(return_dict)
+
     stdin, stdout, stderr = client.exec_command(cmd)
     stdout=stdout.readlines()
     strblob = ''.join(stdout)
     client.close()
     stdin.close()
     stderr.close()
+
+    return_dict['status'] = "parsing"
+    write_result(return_dict)
+
     stats = parser.parse(dedent(strblob))
 
     return_dict['ping_stats'] = stats.as_dict()
