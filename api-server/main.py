@@ -23,6 +23,7 @@ config['HEALTH_CRON'] = int(os.getenv('HEALTH_CRON',default=15))
 config['HEALTH_CRON_COUNT'] = int(0)
 config['SHOW_DEBUG_THINGS'] = False
 config['CAPABILITIES_DEFAULT'] = bool(os.getenv('WEBGUI_PATH',default=False))
+config['CONFIGJSON_PATH'] = os.getenv('CONFIGJSON_PATH',default="./config.json")
 config['path_static'] = "%s/static" % (config['WEBGUI_PATH'])
 config['path_templates'] = "%s/templates" % (config['WEBGUI_PATH'])
 templates = Jinja2Templates(directory=config['path_templates'] )
@@ -73,13 +74,16 @@ def indexExists(list,index):
 
 # Load the config.json
 srv_config = {}
-with open('config.json') as json_file:
+with open(config['CONFIGJSON_PATH']) as json_file:
     srv_config = json.load(json_file)
 
 # Generate an ENUM based out of config.json
 srv_enum_values = {}
+srv_enum_firstvalue = ""
 for k in srv_config['ssh_hosts'].keys():
-    srv_enum_values[k]=k
+    srv_enum_values[str(k)]=str(k)
+    if srv_enum_firstvalue == "":
+        srv_enum_firstvalue = k
 SrcLocationEnum = Enum("TypeEnum", srv_enum_values)
 
 # ================================================================================================================================================================
@@ -181,8 +185,6 @@ async def result_raw(
 # /run/ping
 # ================================================================================================================================================================
 
-enum=["serv1", "serv2", "serv3"]
-
 @app.get(
     "/run/ping", 
     response_class=HTMLResponse,
@@ -204,14 +206,15 @@ async def run_ping(
         ),
         src_location_enum: SrcLocationEnum = Query(
             title="Source Location",
-            description="The location that will be SSH'ed into and the test run from.", 
+            description="The location that will be SSH'ed into and the test run from.",
+            default=srv_enum_firstvalue
         ),
         ipv4: Union[bool, None] = Query(default=False, title="Force IPv4", description='Force the --ipv4 flag passed to the ping command.'),
         ipv6: Union[bool, None] = Query(default=False, title="Force IPv6", description='Force the --ipv6 flag passed to the ping command.'),
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
     uuid_str = str(uuid.uuid1())
-    cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location, dst_location)
+    cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location_enum.name, dst_location)
     stream = os.popen(cmd)
     return "{uidid: %s, url: '/result?uuidid=%s'}" % (uuid_str, uuid_str)
 
