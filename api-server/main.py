@@ -1,4 +1,5 @@
-from email.mime import base
+#from email.mime import base
+from enum import Enum
 from fastapi import FastAPI, Query, Path, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -69,6 +70,17 @@ def indexExists(list,index):
         return True
     else:
         return False
+
+# Load the config.json
+srv_config = {}
+with open('config.json') as json_file:
+    srv_config = json.load(json_file)
+
+# Generate an ENUM based out of config.json
+srv_enum_values = {}
+for k in srv_config['ssh_hosts'].keys():
+    srv_enum_values[k]=k
+SrcLocationEnum = Enum("TypeEnum", srv_enum_values)
 
 # ================================================================================================================================================================
 # /result
@@ -169,6 +181,7 @@ async def result_raw(
 # /run/ping
 # ================================================================================================================================================================
 
+enum=["serv1", "serv2", "serv3"]
 
 @app.get(
     "/run/ping", 
@@ -189,8 +202,7 @@ async def run_ping(
             title="Destination Location",
             description="The target location that the test will be running to."
         ),
-        src_location: Union[str, None] = Query(
-            default="localhost",
+        src_location_enum: SrcLocationEnum = Query(
             title="Source Location",
             description="The location that will be SSH'ed into and the test run from.", 
         ),
@@ -283,6 +295,15 @@ app.mount("/static", StaticFiles(directory=config['path_static']), name="static"
 async def read_item(request: Request):
     return templates.TemplateResponse("start.html", {"request": request, "config": config, "segment": 'index'})
 
+
+# ================================================================================================================================================================
+# /test-sources
+# ================================================================================================================================================================
+
+@app.get("/test-sources", response_class=HTMLResponse, include_in_schema=False)
+async def read_item(request: Request):
+
+    return templates.TemplateResponse("test-sources.html", {"request": request, "config": config, "srv_config": srv_config, "segment": 'test-sources'})
 
 # ================================================================================================================================================================
 # /flipDebug
