@@ -224,14 +224,16 @@ async def run_ping(
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
     uuid_str = str(uuid.uuid1())
-    try:
-        print("          Trying to ping %s from %s" % (dst_location, src_location_enum.name))
-        cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, src_location_enum.name, dst_location)
-        print("          CMD: %s" %(cmd))
-        stream = os.popen(cmd)
-    except Exception as e:
-        print("Exception:")
-        print("   " + e)
+    ip_family = ""
+    if ipv4 == True and ipv6 == False:
+        ip_family = "--ipv4"
+    if ipv4 == False and ipv6 == True:
+        ip_family = "--ipv6"
+
+    print("          Trying to ping %s from %s" % (dst_location, src_location_enum.name))
+    cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s --count=%s %s %s > /dev/null 2>&1" % (config['BIN_PATH'], uuid_str, ip_family, count, src_location_enum.name, dst_location)
+    print("          CMD: %s" %(cmd))
+    stream = os.popen(cmd)
     
     return "{uidid: %s, url: '/result?uuidid=%s'}" % (uuid_str, uuid_str)
 
