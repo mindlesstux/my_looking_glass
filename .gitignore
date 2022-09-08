@@ -131,3 +131,4 @@ dmypy.json
 # PROJECT ONLY
 result_files/*.json
 config.json
+config.json.bak
