@@ -132,3 +132,4 @@ dmypy.json
 result_files/*.json
 config.json
 config.json.bak
+.vscode/
