@@ -15,19 +15,20 @@ LABEL org.opencontainers.image.description="This is a 'looking glass' applicatio
 EXPOSE 9180
 
 # Build out the OS environmental variables
+ARG BASE_PATH
 ARG RESULT_PATH
 ARG BIN_PATH
 ARG WEBGUI_PATH
 ARG HEALTH_CRON
 ARG CAPABILITIES_DEFAULT
 ARG CONFIGJSON_PATH
-ENV RESULT_PATH="/app/result_files"
-ENV BIN_PATH="/app/bin"
-ENV WEBGUI_PATH="/app/webinterface"
+ENV BASE_PATH="/app"
+#ENV RESULT_PATH="/app/result_files"
+#ENV BIN_PATH="/app/bin"
+#ENV WEBGUI_PATH="/app/webinterface"
+#ENV CONFIGJSON_PATH="/app/config.json"
 ENV HEALTH_CRON=15
 ENV CAPABILITIES_DEFAULT='true'
-ENV CONFIGJSON_PATH="/app/config.json"
-
 
 # Update and install some packages
 RUN apt-get update

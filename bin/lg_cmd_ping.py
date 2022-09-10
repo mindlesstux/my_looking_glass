@@ -8,9 +8,9 @@ import traceback
 
 # A bit of a hack but works just in case running manually to develop/debug
 config={}
-config['CONFIGJSON_PATH'] = os.getenv('CONFIGJSON_PATH',default="/app/config.json")
-config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="/app/result_files")
-config['BIN_PATH'] = os.getenv('BIN_PATH',default="/app/bin")
+config['BASE_PATH'] = os.getenv('BASE_PATH', default="/app/")
+config['CONFIGJSON_PATH'] = os.getenv('CONFIGJSON_PATH',default="%s/config.json" % (config['BASE_PATH']))
+config['RESULT_PATH'] = os.getenv('RESULT_PATH',default="%s/result_files" % (config['BASE_PATH']))
 
 parser = argparse.ArgumentParser(prog='lg_cmd_ping.py', description="This is a wrapper script to ping to be called from an API server.")
 cmd = "ping"
