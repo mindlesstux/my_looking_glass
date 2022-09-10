@@ -42,6 +42,7 @@
                     <p>Ping</p>
                 </a>
             </li>
+            {% if config.SHOW_DEBUG_THINGS is true %}
             <li class="nav-header">Tools/Tests Coming Soon</li>
             <li class="nav-item">
                 <a href="/run/mtr" class="nav-link {% if 'tool-mtr' in segment %} active {% endif %}">
@@ -79,6 +80,7 @@
                     <p>SNMP</p>
                 </a>
             </li>
+            {% endif %}
             <li class="nav-header">API Docs</li>
             <li class="nav-item">
                 <a href="/docs" class="nav-link {% if 'api-docs' in segment %} active {% endif %}">
