@@ -21,7 +21,7 @@ config={}
 config['BASE_PATH'] = os.getenv('BASE_PATH', default="/app/")
 config['RESULT_PATH'] = os.getenv('RESULT_PATH', default="%s/result_files" % (config['BASE_PATH']))
 config['BIN_PATH'] = os.getenv('BIN_PATH', default="%s/bin" % (config['BASE_PATH']))
-config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH', default="/%s/webinterface" % (config['BASE_PATH']))
+config['WEBGUI_PATH'] = os.getenv('WEBGUI_PATH', default="%s/webinterface" % (config['BASE_PATH']))
 config['CONFIGJSON_PATH'] = os.getenv('CONFIGJSON_PATH', default="%s/config.json" % (config['BASE_PATH']))
 config['path_static'] = "%s/static" % (config['WEBGUI_PATH'])
 config['path_templates'] = "%s/templates" % (config['WEBGUI_PATH'])
