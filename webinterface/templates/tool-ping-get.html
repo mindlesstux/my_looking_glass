@@ -37,18 +37,18 @@
         <div class="col-md-8">
           <div class="card">
             <div class="card-header">
-
             </div>
-            <form id="quickForm" action="/run/ping" method="post">
+            <form id="quickForm" onsubmit="return false">
               <div class="card-body">
                 <div class="form-group">
                   <label for="dst_location">Target:</label>
                   <input type="text" name="dst_location" class="form-control" id="dst_location" placeholder="google.com">
                 </div>
-                <input type="hidden" id="src_location_enum" name="src_location_enum" value="vultr_nj_usa">
+                <input type="hidden" id="src_location_enum" name="src_location" value="vultr_nj_usa">
+                <button type="button" class="btn btn-primary" value="Submit" onclick="submitForm()">Submit</button>
               </div>
-              <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+              <div id="test-card-footer" class="card-footer">
+                
               </div>
           </form>
           </div>
@@ -72,5 +72,34 @@
   <script src="/static/assets/plugins/jquery-validation/additional-methods.min.js"></script>
   <!-- AdminLTE App -->
   <script src="/static/assets/js/adminlte.min.js"></script>
+
+  <script>
+    function delay(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+    function parse_return(data) {
+      dataObj = JSON.parse(data);
+      document.getElementById('test-card-footer').innerHTML = 'Redirecting to <a herf="' + dataObj['url'] +' ">result page</a>';
+      console.log(document.getElementById('test-card-footer').innerHTML);
+      delay(200).then(() => window.location.href = dataObj['url']);
+    }
+    function submitForm() {
+        var formElement = document.getElementById('quickForm');
+        var data = new FormData(formElement);
+        fetch('/run/ping-via-gui', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+              body: JSON.stringify(Object.fromEntries(data))
+            })
+            .then(response => response.json())
+            .then((data) => parse_return(data))
+            .catch(error => {
+              console.error(error);
+            });
+    }
+ </script>
 
 {% endblock javascripts %}
