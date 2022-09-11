@@ -215,8 +215,8 @@ def kick_off_ping(uuid_str = None, dst_location=None, src_location="NopeDIEOUT",
     print("          Trying to ping %s from %s" % (dst_location, src_location))
     cmd = "python3 %s/lg_cmd_ping.py --uuid=%s %s --count=%s %s %s %s" % (config['BIN_PATH'], uuid_str, ip_family, ping_count, src_location, dst_location, redirect)
     print("          CMD: %s" %(cmd))
-    new_file = "ping_%s.json" % (uuid_str);
-    write_blank_result(file_to_blank=new_file)
+    #new_file = "ping_%s.json" % (uuid_str);
+    #write_blank_result(file_to_blank=new_file)
     stream = os.popen(cmd)
 
     return_str = '{"uidid": "%s", "url": "/result?fetch_uuid=%s"}' % (uuid_str, uuid_str)
