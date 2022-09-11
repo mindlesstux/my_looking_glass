@@ -411,4 +411,10 @@ async def read_item(request: Request):
 # ================================================================================================================================================================
 
 if __name__ == '__main__':
-    uvicorn.run(app, port=9180, host='0.0.0.0')
+    uvicorn.run(
+        app,
+        port=9180,
+        host='0.0.0.0',
+        proxy_headers=True,
+        forwarded_allow_ips='*'
+        )
