@@ -33,7 +33,7 @@ ENV CAPABILITIES_DEFAULT='true'
 # Update and install some packages
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y python3-pip git curl
+RUN apt-get install -y python3-pip git curl libffi-dev
 RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing jinja2 slowapi
 RUN apt autoremove -y
 
