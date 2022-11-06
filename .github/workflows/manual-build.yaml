@@ -50,3 +50,5 @@ jobs:
 #            mindlesstux/my_looking_glass:development
           tags: |
             mindlesstux/my_looking_glass:development
+          platforms: |
+            linux/amd64,linux/arm64,linux/arm/v7
