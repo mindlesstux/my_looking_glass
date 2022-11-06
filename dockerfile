@@ -1,5 +1,5 @@
 # Use ubuntu as our base
-FROM ubuntu:jammy AS build
+FROM ubuntu:latest AS build
 
 # Some information labels
 LABEL version=10001
