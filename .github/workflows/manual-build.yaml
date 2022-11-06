@@ -51,28 +51,4 @@ jobs:
           tags: |
             mindlesstux/my_looking_glass:development
           platforms: |
-            linux/amd64
-      - name: Build and push Docker image - linux/arm64
-        id: build-and-push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-#          tags: |
-#            ghcr.io/${{ github.repository }}:development
-#            mindlesstux/my_looking_glass:development
-          tags: |
-            mindlesstux/my_looking_glass:development
-          platforms: |
-            linux/arm64
-      - name: Build and push Docker image - linux/arm/v7
-        id: build-and-push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-#          tags: |
-#            ghcr.io/${{ github.repository }}:development
-#            mindlesstux/my_looking_glass:development
-          tags: |
-            mindlesstux/my_looking_glass:development
-          platforms: |
-            linux/arm/v7
+            linux/amd64,linux/arm64,linux/arm/v7
