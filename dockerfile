@@ -31,12 +31,12 @@ ENV HEALTH_CRON=15
 ENV CAPABILITIES_DEFAULT='true'
 
 # Update and install some packages
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y python3-pip git curl libffi-dev python3-setuptools
-RUN pip3 install setuptools
-RUN pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing jinja2 slowapi
-RUN apt autoremove -y
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y python3-pip git curl libffi-dev python3-setuptools && \
+    pip3 install setuptools && \
+    pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing jinja2 slowapi && \
+    apt autoremove -y 
 
 # Copy the files into the proper app directory
 COPY api-server /app/api-server

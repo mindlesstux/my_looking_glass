@@ -126,7 +126,7 @@
                         <td>{{ value.dt_c }}</td>
                         <td>{{ value.dt_m }}</td>
 
-                {% if value.process_complete is true %}
+                {% if value.process_complete == true %}
                     {% if 'complete' in value.status %}
                         <td><i class="fas fa-check-circle text-success"></i> Complete</td>
                         <td><a href="/result/raw?fetch_uuid={{ value.uuid }}"><i class="fas fa-save"></i></a></td>

@@ -42,7 +42,7 @@
                     <p>Ping</p>
                 </a>
             </li>
-            {% if config.SHOW_DEBUG_THINGS is true %}
+            {% if config.SHOW_DEBUG_THINGS == true %}
             <li class="nav-header">Tools/Tests Coming Soon</li>
             <li class="nav-item">
                 <a href="/run/mtr" class="nav-link {% if 'tool-mtr' in segment %} active {% endif %}">
@@ -94,7 +94,7 @@
                     <p>ReDoc</p>
                 </a>
             </li>
-            {% if config.SHOW_DEBUG_THINGS is true %}
+            {% if config.SHOW_DEBUG_THINGS == true %}
             <li class="nav-header">Debug Things</li>
             <li class="nav-item">
                 <a href="/healthcheck" class="nav-link {% if 'debug-healthcheck' in segment %} active {% endif %}">
