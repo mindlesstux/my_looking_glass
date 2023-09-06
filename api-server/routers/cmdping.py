@@ -55,6 +55,7 @@ class TestOfPing(BaseModel):
     tags=["Tests In Development"],
     summary="Run a ping test.  Body encoded, not url encoded",
     description="Run a simple ping test.",
+    include_in_schema=False,
     )
 async def create_item(body: TestOfPing):
 
@@ -96,5 +97,5 @@ async def run_ping(
         count: Union[int, None] = Query(default=10, ge=1, le=100, description='The number of pings to run')
     ):
 
-    return_str = kick_off_ping(dst_location=dst_location, src_location=config.src_location_enum.name, ip_family_ipv4=ipv4, ip_family_ipv6=ipv6, ping_count=count)
+    return_str = kick_off_ping(dst_location=dst_location, src_location=src_location_enum.name, ip_family_ipv4=ipv4, ip_family_ipv6=ipv6, ping_count=count)
     return return_str

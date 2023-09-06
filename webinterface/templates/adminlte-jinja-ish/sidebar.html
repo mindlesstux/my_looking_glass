@@ -42,14 +42,14 @@
                     <p>Ping</p>
                 </a>
             </li>
-            {% if config.SHOW_DEBUG_THINGS == true %}
-            <li class="nav-header">Tools/Tests Coming Soon</li>
             <li class="nav-item">
                 <a href="/run/mtr" class="nav-link {% if 'tool-mtr' in segment %} active {% endif %}">
                     <i class="far fa-circle nav-icon text-danger"></i>
                     <p>MTR</p>
                 </a>
             </li>
+            {% if config.SHOW_DEBUG_THINGS == true %}
+            <li class="nav-header">Tools/Tests Coming Soon</li>
             <li class="nav-item">
                 <a href="/run/whois" class="nav-link {% if 'tool-whois' in segment %} active {% endif %}">
                     <i class="far fa-circle nav-icon text-danger"></i>
