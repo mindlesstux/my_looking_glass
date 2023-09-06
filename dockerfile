@@ -1,6 +1,14 @@
 # Use ubuntu as our base
 FROM ubuntu:latest AS build
 
+# Update and install some packages
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y python3-pip git curl libffi-dev python3-setuptools && \
+    pip3 install setuptools && \
+    pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing jinja2 slowapi && \
+    apt autoremove -y 
+
 # Some information labels
 LABEL version=10001
 LABEL org.opencontainers.image.authors="MindlessTux"
@@ -29,14 +37,6 @@ ENV BASE_PATH="/app"
 #ENV CONFIGJSON_PATH="/app/config.json"
 ENV HEALTH_CRON=15
 ENV CAPABILITIES_DEFAULT='true'
-
-# Update and install some packages
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y python3-pip git curl libffi-dev python3-setuptools && \
-    pip3 install setuptools && \
-    pip3 install "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing jinja2 slowapi && \
-    apt autoremove -y 
 
 # Copy the files into the proper app directory
 COPY api-server /app/api-server
