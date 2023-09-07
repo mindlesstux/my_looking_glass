@@ -5,7 +5,7 @@ FROM ubuntu:latest AS build
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt autoremove -y 
-RUN apt-get install -y python3-pip git curl libffi-dev python3-setuptools
+RUN apt-get install -y python3-pip git curl libffi-dev python3-setuptools python-setuptools
 RUN pip3 install --upgrade setuptools
 RUN pip3 install --upgrade "fastapi[all]" "uvicorn[standard]" python-dotenv paramiko argparse pingparsing jinja2 slowapi
 
